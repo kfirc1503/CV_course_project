@@ -69,7 +69,7 @@ class Trainer:
             outputs = self.model(inputs)
             # compute the loss:
             loss = self.criterion(outputs, targets)
-            # compute the backword pass:
+            # compute the backward pass:
             loss.backward()
             self.optimizer.step()
             # update the total loss and the avg loss :
