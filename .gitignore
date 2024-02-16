@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# the data set directory
+solution_2024/Assignment4_datasets
+
 # C extensions
 *.so
 
