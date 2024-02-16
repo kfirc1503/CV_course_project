@@ -16,6 +16,7 @@ class FacesDataset(Dataset):
         transform: torch.Transform. Transform or a bunch of transformed to be
         applied on every image.
     """
+
     def __init__(self, root_path: str, transform=None):
         """Initialize a faces dataset."""
         self.root_path = root_path
@@ -26,10 +27,23 @@ class FacesDataset(Dataset):
     def __getitem__(self, index) -> tuple[torch.Tensor, int]:
         """Get a sample and label from the dataset."""
         """INSERT YOUR CODE HERE, overrun return."""
+        if index >= len(self.real_image_names):
+            label = 1
+            image_name = self.fake_image_names[index - len(self.real_image_names)]
+        else:
+            label = 0
+            image_name = self.real_image_names[index]
+        image_category = 'fake' if label == 1 else 'real'
+        img_path = os.path.join(self.root_path, image_category, image_name)
+        img = Image.open(img_path, 'r')
 
-        return torch.rand((3, 256, 256)), int(torch.randint(0, 2, size=(1, )))
+        if self.transform is not None:
+            img = self.transform(img)
+
+        return img, label
 
     def __len__(self):
         """Return the number of images in the dataset."""
         """INSERT YOUR CODE HERE, overrun return."""
-        return 100
+        total_img_num = len(self.real_image_names) + len(self.fake_image_names)
+        return total_img_num
