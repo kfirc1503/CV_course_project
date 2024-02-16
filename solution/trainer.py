@@ -9,7 +9,6 @@ from torch.utils.data import Dataset, DataLoader
 
 from common import OUTPUT_DIR, CHECKPOINT_DIR
 
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -21,9 +20,11 @@ class LoggingParameters:
     optimizer_name: str
     optimizer_params: dict
 
+
 # pylint: disable=R0902, R0913, R0914
 class Trainer:
     """Abstract model trainer on a binary classification task."""
+
     def __init__(self,
                  model: nn.Module,
                  optimizer: torch.optim,
@@ -61,6 +62,24 @@ class Trainer:
 
         for batch_idx, (inputs, targets) in enumerate(train_dataloader):
             """INSERT YOUR CODE HERE."""
+            inputs, targets = inputs.to(device), targets.to(device)
+            # zero the gradients:
+            self.optimizer.zero_grad()
+            # compute the forward pass:
+            outputs = self.model(inputs)
+            # compute the loss:
+            loss = self.criterion(outputs, targets)
+            # compute the backword pass:
+            loss.backward()
+            # update the total loss and the avg loss :
+            total_loss += loss.item() * inputs.shape[0]
+            nof_samples += inputs.shape[0]
+            avg_loss = float(total_loss / nof_samples)
+            # correct predictions and update the correct samples :
+            _, predicted = torch.max(outputs.data, 1)
+            correct_labeled_samples += (predicted == targets).sum().item()
+            accuracy = float(correct_labeled_samples / nof_samples)
+
             if batch_idx % print_every == 0 or \
                     batch_idx == len(train_dataloader) - 1:
                 print(f'Epoch [{self.epoch:03d}] | Loss: {avg_loss:.3f} | '
