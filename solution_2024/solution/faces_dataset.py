@@ -16,6 +16,7 @@ class FacesDataset(Dataset):
         transform: torch.Transform. Transform or a bunch of transformed to be
         applied on every image.
     """
+
     def __init__(self, root_path: str, transform=None):
         """Initialize a faces dataset."""
         self.root_path = root_path
@@ -32,8 +33,8 @@ class FacesDataset(Dataset):
         else:
             label = 0
             image_name = self.real_image_names[index]
-
-        img_path = os.path.join(self.root_path, 'fake' if label == 1 else 'real', image_name)
+        image_category = 'fake' if label == 1 else 'real'
+        img_path = os.path.join(self.root_path, image_category, image_name)
         img = Image.open(img_path, 'r')
 
         if self.transform is not None:
