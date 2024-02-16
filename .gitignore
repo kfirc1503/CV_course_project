@@ -5,7 +5,7 @@ __pycache__/
 
 # the data set directory
 solution_2024/Assignment4_datasets
-solution_2024/solution/.idea
+
 # C extensions
 *.so
 
