@@ -4,8 +4,8 @@ __pycache__/
 *$py.class
 
 # the data set directory
-solution_2024/Assignment4_datasets
-soulution_2024/solution/.idea
+Assignment4_datasets/
+solution/.idea
 
 # C extensions
 *.so
