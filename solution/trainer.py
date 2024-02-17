@@ -119,10 +119,11 @@ class Trainer:
                 # compute the loss:
                 loss = self.criterion(outputs, targets)
                 total_loss += loss.item() * inputs.shape[0]
+                nof_samples += inputs.shape[0]
+                avg_loss = float(total_loss) / nof_samples
                 # compute the accuracy:
                 _, predicted = torch.max(outputs, 1)
                 correct_labeled_samples += (predicted == targets).sum().item()
-                nof_samples += inputs.shape[0]
                 accuracy = float(correct_labeled_samples) / nof_samples
 
             if batch_idx % print_every == 0 or batch_idx == len(dataloader) - 1:
