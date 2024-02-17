@@ -6,6 +6,7 @@ __pycache__/
 # the data set directory
 Assignment4_datasets/
 solution/.idea
+solution/checkpoints
 
 # C extensions
 *.so
