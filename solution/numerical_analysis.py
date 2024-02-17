@@ -24,10 +24,10 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='Analyze network performance.')
     parser.add_argument('--model', '-m',
-                        default='XceptionBased', type=str,
+                        default='SimpleNet', type=str,
                         help='Model name: SimpleNet or XceptionBased.')
     parser.add_argument('--checkpoint_path', '-cpp',
-                        default='checkpoints/XceptionBased.pt', type=str,
+                        default='checkpoints/fakes_dataset_SimpleNet_SGD.pt', type=str,
                         help='Path to model checkpoint.')
     parser.add_argument('--dataset', '-d',
                         default='fakes_dataset', type=str,
@@ -57,10 +57,17 @@ def get_soft_scores_and_true_labels(dataset, model):
         gt_labels: an iterable holding the samples' ground truth labels.
     """
     """INSERT YOUR CODE HERE, overrun return."""
-    for batch_index, (inputs, targets) in enumerate(dataset):
-        pass
+    all_first_soft_scores = []
+    all_second_soft_scores = []
+    gt_labels = []
+    data_loader = DataLoader(dataset, batch_size=32)
+    for inputs, targets in data_loader:
+        outputs = model(inputs)
+        all_first_soft_scores.extend(outputs[:, 0].tolist())
+        all_second_soft_scores.extend(outputs[:, 1].tolist())
+        gt_labels.extend(targets.tolist())
 
-    return torch.rand(100, ), torch.rand(100, ), torch.randint(0, 2, (100,))
+    return all_first_soft_scores, all_second_soft_scores, gt_labels
 
 
 def plot_roc_curve(roc_curve_figure,
