@@ -63,9 +63,9 @@ def get_soft_scores_and_true_labels(dataset, model):
     data_loader = DataLoader(dataset, batch_size=32)
     for inputs, targets in data_loader:
         outputs = model(inputs)
-        all_first_soft_scores.append(outputs[:, 0].tolist())
-        all_second_soft_scores.append(outputs[:, 1].tolist())
-        gt_labels.append(targets.tolist())
+        all_first_soft_scores.extend(outputs[:, 0].tolist())
+        all_second_soft_scores.extend(outputs[:, 1].tolist())
+        gt_labels.extend(targets.tolist())
 
     return all_first_soft_scores, all_second_soft_scores, gt_labels
 
