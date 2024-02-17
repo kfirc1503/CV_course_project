@@ -27,10 +27,10 @@ def parse_args():
                         help='Number of epochs to run')
     parser.add_argument('--model', '-m', default='SimpleNet', type=str,
                         help='Model name: SimpleNet or XceptionBased')
-    parser.add_argument('--optimizer', '-o', default='SGD', type=str,
+    parser.add_argument('--optimizer', '-o', default='Adam', type=str,
                         help='Optimization Algorithm')
     parser.add_argument('--dataset', '-d',
-                        default='fakes_dataset', type=str,
+                        default='synthetic_dataset', type=str,
                         help='Dataset: fakes_dataset or synthetic_dataset.')
 
     return parser.parse_args()
