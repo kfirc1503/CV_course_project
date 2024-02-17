@@ -12,7 +12,6 @@ from torch.utils.data import DataLoader
 from common import FIGURES_DIR
 from utils import load_dataset, load_model
 
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -58,7 +57,10 @@ def get_soft_scores_and_true_labels(dataset, model):
         gt_labels: an iterable holding the samples' ground truth labels.
     """
     """INSERT YOUR CODE HERE, overrun return."""
-    return torch.rand(100, ), torch.rand(100, ), torch.randint(0, 2, (100, ))
+    for batch_index, (inputs, targets) in enumerate(dataset):
+        pass
+
+    return torch.rand(100, ), torch.rand(100, ), torch.randint(0, 2, (100,))
 
 
 def plot_roc_curve(roc_curve_figure,
