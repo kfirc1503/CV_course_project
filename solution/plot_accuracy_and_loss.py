@@ -20,10 +20,10 @@ def parse_args():
                         default='SimpleNet', type=str,
                         help='Model name: SimpleNet or XceptionBased.')
     parser.add_argument('--train_details_json', '-j',
-                        default='out/fakes_dataset_SimpleNet_SGD.json', type=str,
+                        default='out/synthetic_dataset_SimpleNet_Adam.json', type=str,
                         help='Json containing loss and accuracy.')
     parser.add_argument('--dataset', '-d',
-                        default='fakes_dataset', type=str,
+                        default='synthetic_dataset', type=str,
                         help='Dataset: fakes_dataset or synthetic_dataset.')
 
     return parser.parse_args()
