@@ -27,7 +27,7 @@ def parse_args():
                         default='XceptionBased', type=str,
                         help='Model name: SimpleNet or XceptionBased.')
     parser.add_argument('--checkpoint_path', '-cpp',
-                        default='checkpoints/fakes_dataset_SimpleNet_SGD.pt', type=str,
+                        default='checkpoints/synthetic_dataset_XceptionBased_Adam.pt', type=str,
                         help='Path to model checkpoint.')
     parser.add_argument('--dataset', '-d',
                         default='synthetic_dataset', type=str,
