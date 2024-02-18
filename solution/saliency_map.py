@@ -84,6 +84,15 @@ def compute_gradient_saliency_maps(samples: torch.tensor,
     return saliency
 
 
+    # samples.requires_grad_(True)
+    # model.to(device)
+    # outputs = model(samples)  # [B x 2]
+    #
+    # true_labels_scores = outputs[range(len(true_labels)), true_labels]
+    # true_labels_scores.sum().backward()
+    #
+    # return torch.abs(samples.grad).max(dim=1).values
+
 def main():  # pylint: disable=R0914, R0915
     """Parse script arguments, show saliency maps for 36 random samples,
     and the average saliency maps over all real and fake samples in the test
