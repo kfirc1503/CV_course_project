@@ -23,14 +23,14 @@ def parse_args():
                         help='SGD momentum')
     parser.add_argument('--batch_size', '-b', default=32, type=int,
                         help='Training batch size')
-    parser.add_argument('--epochs', '-e', default=2, type=int,
+    parser.add_argument('--epochs', '-e', default=5, type=int,
                         help='Number of epochs to run')
-    parser.add_argument('--model', '-m', default='XceptionBased', type=str,
+    parser.add_argument('--model', '-m', default='SimpleNet', type=str,
                         help='Model name: SimpleNet or XceptionBased')
     parser.add_argument('--optimizer', '-o', default='Adam', type=str,
                         help='Optimization Algorithm')
     parser.add_argument('--dataset', '-d',
-                        default='synthetic_dataset', type=str,
+                        default='fakes_dataset', type=str,
                         help='Dataset: fakes_dataset or synthetic_dataset.')
 
     return parser.parse_args()

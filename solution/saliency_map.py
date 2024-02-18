@@ -12,7 +12,6 @@ from torch.utils.data import DataLoader
 from common import FIGURES_DIR
 from utils import load_dataset, load_model
 
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
@@ -28,10 +27,10 @@ def parse_args():
                         default='XceptionBased', type=str,
                         help='Model name: SimpleNet or XceptionBased.')
     parser.add_argument('--checkpoint_path', '-cpp',
-                        default='checkpoints/XceptionBased.pt', type=str,
+                        default='checkpoints/synthetic_dataset_XceptionBased_Adam.pt', type=str,
                         help='Path to model checkpoint.')
     parser.add_argument('--dataset', '-d',
-                        default='fakes_dataset', type=str,
+                        default='synthetic_dataset', type=str,
                         help='Dataset: fakes_dataset or synthetic_dataset.')
 
     return parser.parse_args()
@@ -62,8 +61,37 @@ def compute_gradient_saliency_maps(samples: torch.tensor,
         shape Bx256x256 where B is the number of images in samples.
     """
     """INSERT YOUR CODE HERE, overrun return."""
-    return torch.rand(6, 256, 256)
+    # transfer the model to the device
+    model.to(device)
+    # transfer the samples and the labels to the device:
+    samples, true_labels = samples.to(device), true_labels.to(device)
+    # just to be sure we are at evaluation mode
+    model.eval()
+    # enable gradient computation
+    samples.requires_grad_(True)
+    # the output is dims of B X 2 (score if the image is real or fake )
+    outputs = model(samples)
 
+    row_indices = np.arange(true_labels.shape[0])
+    true_labels_score = outputs[row_indices, true_labels]
+
+    model.zero_grad()
+    true_labels_score.backward(torch.ones_like(true_labels_score))
+
+    gradients = samples.grad.data
+    abs_gradients = gradients.abs()
+    saliency, _ = torch.max(abs_gradients, dim=1)
+    return saliency
+
+
+    # samples.requires_grad_(True)
+    # model.to(device)
+    # outputs = model(samples)  # [B x 2]
+    #
+    # true_labels_scores = outputs[range(len(true_labels)), true_labels]
+    # true_labels_scores.sum().backward()
+    #
+    # return torch.abs(samples.grad).max(dim=1).values
 
 def main():  # pylint: disable=R0914, R0915
     """Parse script arguments, show saliency maps for 36 random samples,
@@ -92,8 +120,8 @@ def main():  # pylint: disable=R0914, R0915
         all_samples.append(torch.cat([sample_to_image(s).unsqueeze(0)
                                       for s in samples]))
         saliency_maps = compute_gradient_saliency_maps(samples.to(device),
-                                     true_labels.to(device),
-                                     model)
+                                                       true_labels.to(device),
+                                                       model)
         all_saliency_maps.append(saliency_maps.cpu().detach())
 
     all_samples = torch.cat(all_samples)
